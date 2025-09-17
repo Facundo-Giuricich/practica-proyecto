@@ -1,3 +1,4 @@
+import { get } from "mongoose";
 import User from "../models/User.js";
 import bcrypt from "bcrypt";
 
@@ -33,6 +34,19 @@ const userController = {
       res.status(500).json({
         ok: false,
         msg: "error al crear el usuario",
+        error: error.message,
+      });
+    }
+  },
+
+  getAllUsers: async (req, res) => {
+    try {
+      const users = await User.find().select("-password");
+      res.status(200).json(users);
+    } catch (error) {
+      res.status(500).json({
+        ok: false,
+        msg: "error al traer los usuarios",
         error: error.message,
       });
     }
